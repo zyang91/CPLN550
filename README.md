@@ -1,6 +1,10 @@
-# CPLN 550
+# CPLN 550 :INTRODUCTION TO TRANSPORTATION PLANNING
 
-Introdcution to transportation planning
+Department of City and Regional Planning 
+
+Fall 2024
+
+University of Pennsylvania 
 
 Instructor: Dr. Erick Guerra
 
