@@ -1,4 +1,4 @@
-# CPLN 550 :INTRODUCTION TO TRANSPORTATION PLANNING
+# CPLN 550 : Introduction to Transportation Planning
 
 Department of City and Regional Planning 
 
