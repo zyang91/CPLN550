@@ -1,0 +1,191 @@
+---
+title: "assignment3"
+output: html_document
+date: "2024-10-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment 3
+
+This is an R Markdown document for assignment 3 Transportation planning
+
+### set work directory
+
+```{r}
+setwd("/Users/apple/Desktop/CPLN550")
+```
+
+### Require Packages
+```{r}
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+```
+
+### Load Data
+```{r}
+hh <- read.csv("Data/1_Household_Public.csv")
+per <- read.csv("Data/2_Person_Public.csv")
+veh <- read.csv("Data/3_Vehicle_Public.csv")
+trip <- read.csv("Data/4_Trip_Public.csv")
+```
+
+## Question 1
+
+1)	Draw a random household from the second ten households in your data. 
+Write a brief description of the household. Be sure to include their income, race, composition, county of residence, and whether they own a car.
+```{r}
+sort(unique(hh$HH_ID))[sample(11:20,1)]
+```
+
+```{r}
+random <- hh %>%
+  filter(HH_ID == 101162)
+
+random_person <- per %>%
+  filter(HH_ID == 101162)
+
+print(random)
+print(random_person)
+```
+
+## Question 2
+
+2)	Describe the daily activities and travel of the household’s members using the trip data.   
+
+```{r pressure, echo=FALSE}
+random_trip <- trip %>%
+  filter(HH_ID == 101162)
+
+print(random_trip)
+```
+## Question 3
+
+3)	Provide an estimate of the total number of bicycle trips represented by the survey data. 
+```{r}
+bike_trip <- trip %>%
+  filter(MODE_AGG == 2) 
+bike_trip %>%
+  summarise(total_trips=sum(P_WEIGHT, na.rm=TRUE))
+```
+## Question 4
+
+4)	Make a table that shows the mode choice for residents from the county of the household from question 1. 
+```{r}
+complet_trip <-left_join(hh, trip, by = "HH_ID")
+
+H_trip <- complet_trip %>%
+  filter(H_COUNTY== random$H_COUNTY)
+
+H_trip_mode <- H_trip %>%
+  filter(!is.na(MODE_AGG)) %>%
+  group_by(MODE_AGG) %>%
+  summarise(total_trips_by_mode=sum(P_WEIGHT, na.rm=TRUE))
+
+H_tripPercentage <- H_trip_mode %>%
+  mutate(percentage = total_trips_by_mode/sum(total_trips_by_mode)*100)
+
+print(H_tripPercentage)
+```
+## Question 5
+
+5)	Make a graphic that shows the relationship between household income and the age of a household’s vehicle for all households. 
+
+```{r}
+household <- left_join(hh, veh, by = "HH_ID")
+ ## clean the data-removing income missing values
+household <- household %>%
+  filter(!INCOME %in% c(98, 99))
+## Clean the data- removing the household do not have vehicle
+household <- household %>%
+  filter(TOT_VEH.y > 0)
+## Clean the data- removing missing YEAR, changing the YEAR to Car age
+household <- household %>%
+  filter(!YEAR %in% c(9998, 9999))%>%
+  mutate(VEHAGE= 2014- YEAR)
+```
+## boxplot
+### Converted the income number into text
+```{r}
+household <-household %>%
+  mutate(income= case_when(INCOME==1 ~ "Under $10,000",
+                           INCOME==2 ~ "$10,000-$24,999",
+                           INCOME==3 ~ "$25,000-$34,999",
+                           INCOME==4 ~ "$35,000-$49,999",
+                           INCOME==5 ~ "$50,000-$74,999",
+                           INCOME==6 ~ "$75,000-$99,999",
+                           INCOME==7 ~ "$100,000-$149,999",
+                           INCOME==8 ~ "$150,000-$199,999",
+                           INCOME==9 ~ "$200,000-$249,999",
+                           INCOME==10 ~ "$250,000 or more"))
+household$income <- factor(household$income, levels = c("Under $10,000", 
+                                                        "$10,000-$24,999", 
+                                                        "$25,000-$34,999",
+                                                        "$35,000-$49,999", 
+                                                        "$50,000-$74,999", 
+                                                        "$75,000-$99,999",
+                                                        "$100,000-$149,999", 
+                                                        "$150,000-$199,999", 
+                                                        "$200,000-$249,999", 
+                                                        "$250,000 or more"))
+ggplot(household, aes(x= income, y= VEHAGE))+
+  geom_boxplot()+
+  labs(title="Boxplot of Car Age by Household Income Level", 
+       x="Income level", y= "Vehicle Age")
+```
+### without outlier- same boxplot with better visulization
+```{r}
+ggplot(household, aes(x = income, y = VEHAGE)) +
+  geom_boxplot(outlier.shape = NA) +
+  labs(
+    title = "Boxplot of Car Age by Household Income Level",
+    x = "Income level", y = "Vehicle Age")+
+  ylim(0, 30)
+
+```
+
+## Question 6
+
+6)	Make a table or graphic that shows the relationship between household income and mode choice for all households. 
+
+```{r}
+modechoice<-left_join(hh, trip, by = "HH_ID")
+
+## clean the data-removing income missing values
+modechoice <- modechoice %>%
+  filter(!INCOME %in% c(98, 99))
+## Clean the data- removing missing MODE_AGG
+modechoice <- modechoice %>%
+  filter(!is.na(MODE_AGG))
+
+```
+
+### plot
+```{r}
+modechoice <- modechoice %>%
+  mutate(mode= case_when(MODE_AGG==1 ~ "Walk",
+                             MODE_AGG==2 ~ "Bike",
+                             MODE_AGG==3 ~ "Private Vehicle",
+                             MODE_AGG==4 ~ "Private Transit",
+                             MODE_AGG==5 ~ "Public Transit",
+                             MODE_AGG==6 ~ "School Bus",
+                             MODE_AGG==7 ~ "Other"))
+
+modechoice$mode <- factor(modechoice$mode, levels = c("Walk", 
+                                                      "Bike", 
+                                                      "Private Vehicle", 
+                                                      "Private Transit", 
+                                                      "Public Transit", 
+                                                      "School Bus", 
+                                                      "Other"))
+## plot boxplot
+ggplot(modechoice, aes(x= mode, y= INCOME, fill = mode))+
+  geom_boxplot()+
+  labs(title="Boxplot of Household Income by Mode Choice", 
+       x="Mode Choice", y= "Household Income")+
+  theme(legend.position = "none")
+```
+
