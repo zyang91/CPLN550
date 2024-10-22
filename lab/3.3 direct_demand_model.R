@@ -93,8 +93,11 @@ mean(dat$rider[dat$hrt_d==1 & dat$CBSA_nam!="New York-Northern New Jersey-Long I
 #Predict Average daily ridership as a function of population, jobs, and service frequency
 # Model building
 
+ggplot(dat, aes(x=pop_halfmile, y=rider)) + geom_point() + geom_smooth(method = "lm")
+
 x <- lm(rider ~ pop_halfmile + jobs_halfmile + frequency, dat)
 summary(x)
+
 
 ## How to interpret the results? Causality?
 # Coefficients, Stand Error, Pr, p-value, R-squared or Adjusted R-squared?
@@ -120,7 +123,10 @@ summary(x2)
 
 # Did this improve our model
 # What does the Adjusted R-squared tell you (be careful)?
+library(stargazer)
 stargazer(x,x2, type = "text")
+# First check the Star (statistics significant)
+# Second check whether the coefficient changes a lot
 
 # 1. Informal: statistically significant variable? 
 # 2. Theoretically logical? 
@@ -159,6 +165,7 @@ hist(log(dat$rider))
 x3 <- lm(log(rider+1) ~ log(pop_halfmile+1) + log(jobs_halfmile+1) 
          + log(frequency) + log (bus_connections+1), dat)
 summary(x3)
+# R-square lower, but much better models
 
 # Log transformation will get rid of negative values in prediction.
 # How do these plots look? Better?
@@ -173,6 +180,7 @@ dat$p3exp <- exp(dat$p3)-1
 
 plot(density(dat$p3exp))
 lines(density(dat$rider, na.rm=TRUE), col='red')
+
 # Fitness v. Predicting power
 # Try more on your own
 
