@@ -1,6 +1,5 @@
 rm(list=ls())
-setwd("C:/Users/erickg/Box/2. Courses/CPLN 550 Transportation Planning/1. Lectures/Part 3 Transportation modeling/Direct Demand")
-
+setwd("/Users/apple/Desktop/CPLN550/Data")
 ####Load data
 load("data.Rda")
 load("data_test.Rda")
@@ -33,15 +32,19 @@ head(dat)
 summary(dat)
 table(dat$parking_d)
 hist(dat$rider)
+library(tidyverse)
+ggplot(dat, aes(x=rider)) + geom_histogram(binwidth=1000)
+
 # What are CBSAs?
 # https://en.wikipedia.org/wiki/Core-based_statistical_area
 
 dat$jobs_30m_drive[dat$jobs_30m_drive < 0] <- NA
-
 # This isn't a very helpful visualization because of outlier(s).
 plot(density(dat$rider))
 # What should normal look like?
 normaldist <- rnorm(1000,mean=6300,sd=12775.94)
+plot(density(normaldist))
+
 
 par(mfrow=c(1,2))
 plot(density(dat$rider))
@@ -68,7 +71,10 @@ par(mfrow=c(1,1))
 plot(dat$frequency, dat$rider)
 abline(lm(dat$rider ~ dat$frequency))
 
+ggplot(dat, aes(x=frequency, y=rider)) + geom_point() + geom_smooth(method = "lm")
+
 #Boxplot is a helpful way to look at distribution
+
 boxplot(rider ~ hrt_d, dat)
 
 # Outlier issue
