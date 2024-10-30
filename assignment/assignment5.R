@@ -50,6 +50,18 @@ per_hh <-per_hh %>%
                         AGECAT==10 ~ "65-74",
                         AGECAT==11 ~ "75-84",
                         AGECAT==12 ~ "85+"))
+per_hh$age <- factor(per_hh$age, levels = c("Under 5", 
+                                            "6-12", 
+                                            "13-15", 
+                                            "16-17", 
+                                            "18-24", 
+                                            "25-34", 
+                                            "35-44", 
+                                            "45-54", 
+                                            "55-64", 
+                                            "65-74", 
+                                            "75-84", 
+                                            "85+"))
 per_hh<-per_hh %>%
   mutate(income= case_when(INCOME==1 ~ "Under $10,000",
                            INCOME==2 ~ "$10,000-$24,999",
@@ -61,6 +73,16 @@ per_hh<-per_hh %>%
                            INCOME==8 ~ "$150,000-$199,999",
                            INCOME==9 ~ "$200,000-$249,999",
                            INCOME==10 ~ "$250,000 or more"))
+per_hh$income <- factor(per_hh$income, levels = c("Under $10,000", 
+                                                        "$10,000-$24,999", 
+                                                        "$25,000-$34,999",
+                                                        "$35,000-$49,999", 
+                                                        "$50,000-$74,999", 
+                                                        "$75,000-$99,999",
+                                                        "$100,000-$149,999", 
+                                                        "$150,000-$199,999", 
+                                                        "$200,000-$249,999", 
+                                                        "$250,000 or more"))
 per_hh <- per_hh %>%
   filter(RACE!=98) %>%
   filter(RACE!=99)%>%
@@ -76,15 +98,22 @@ per_hh <- per_hh %>%
                          RACE==97 ~ "Other",
                          RACE==100 ~ "Multi-Racial",
                          ))
-
+per_hh$race <- factor(per_hh$race,levels=c("White", 
+                      "Black", 
+                      "Hispanic", 
+                      "American Indian or Alaska Native", 
+                      "Asian", 
+                      "Hawaiian or Pacific Islander", 
+                      "Other", 
+                      "Multi-Racial"))
 ##  people who take trip age distribution
 per_hh_travel <- per_hh %>%
   filter(no_trip ==0)
-ggplot(per_hh_travel, aes(x=AGECAT))+
+ggplot(per_hh_travel, aes(x=age))+
   geom_bar(position="dodge")+
   labs(title="Age Distribution of People Who Took Trips", x="Age Category", y="Frequency")
 
-ggplot(per_hh_travel, aes(x=INCOME))+
+ggplot(per_hh_travel, aes(x=income))+
   geom_bar(position="dodge")+
   labs(title="Income Distribution of People Who Took Trips", x="Income Category", y="Frequency")
 
@@ -94,12 +123,25 @@ ggplot(per_hh_travel, aes(x=race, fill=race))+
 ##  people who did not take trip age distribution
 per_hh_no_travel <- per_hh %>%
   filter(no_trip ==1)
-ggplot(per_hh_no_travel, aes(x=AGECAT))+
+ggplot(per_hh_no_travel, aes(x=age))+
   geom_bar(position="dodge")+
   labs(title="Age Distribution of People Who Did Not Take Trips", x="Age Category", y="Frequency")
-ggplot(per_hh_no_travel, aes(x=INCOME))+
+ggplot(per_hh_no_travel, aes(x=income))+
   geom_bar(position="dodge")+
   labs(title="Income Distribution of People Who Did Not Take Trips", x="Income Category", y="Frequency")
 ggplot(per_hh_no_travel,aes(x=race, fill=race))+
   geom_bar(position="dodge")+
   labs(title="Race Distribution of People Who Did Not take Trips",x="Race Category", y="Frequency")
+
+#3.	Create a table showing the percentage of people who did not take a trip by the reason 
+# they did not take a trip (remember to use the data dictionary to find variables). 
+per_hh_no_travel_reason <- left_join(per_hh_no_travel, trip, by = "PERSON_ID")
+per_hh_no_travel_reason <- per_hh_no_travel_reason %>%
+  filter(WHYNO != 98) %>%
+  filter(WHYNO != 99)
+per_hh_no_travel_reason <- per_hh_no_travel_reason %>%
+  group_by(WHYNO) %>%
+  summarise(count = n(),
+            percentage = n()/nrow(per_hh_no_travel_reason))
+write.csv(per_hh_no_travel_reason, "per_hh_no_travel_reason.csv")
+
