@@ -189,3 +189,7 @@ ggplot(dat, aes(x=log(jobs_halfmile), y=log(rider)))+
 #7.	Predict station level ridership (linear) as a function of jobs within a half mile, population within a half mile, 
 # whether the station is a terminal, whether it connects to an airport. 
 # Provide the output of the regression.
+
+y<- lm(rider ~ jobs_halfmile + pop_halfmile + terminal_d + airport_d, dat)
+summary(y)
+
