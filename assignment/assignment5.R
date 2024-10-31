@@ -231,3 +231,7 @@ plot(y)
 # explain your answer.
 z<- lm(rider ~ jobs_halfmile + pop_halfmile + terminal_d + airport_d + hrt_d, dat)
 summary(z)
+
+library(stargazer)
+stargazer(y, z, type="text")
+stargazer(y, z, type="html", out="regression.html")
