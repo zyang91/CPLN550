@@ -109,6 +109,15 @@ per_hh$race <- factor(per_hh$race,levels=c("White",
 ##  people who take trip age distribution
 per_hh_travel <- per_hh %>%
   filter(no_trip ==0)
+per_hh_travel_age <- per_hh_travel %>%
+  group_by(age) %>%
+  summarise(per=n()/nrow(per_hh_travel))
+per_hh_travel_income <- per_hh_travel %>%
+  group_by(income) %>%
+  summarise(per=n()/nrow(per_hh_travel))
+per_hh_travel_race <-per_hh_travel %>%
+  group_by(race) %>%
+  summarise(per=n()/nrow(per_hh_travel))
 ggplot(per_hh_travel, aes(x=age))+
   geom_bar(position="dodge")+
   labs(title="Age Distribution of People Who Took Trips", x="Age Category", y="Frequency")
@@ -123,6 +132,15 @@ ggplot(per_hh_travel, aes(x=race, fill=race))+
 ##  people who did not take trip age distribution
 per_hh_no_travel <- per_hh %>%
   filter(no_trip ==1)
+per_hh_no_travel_age <- per_hh_no_travel %>%
+  group_by(age) %>%
+  summarise(per=n()/nrow(per_hh_no_travel))
+per_hh_no_travel_income <- per_hh_no_travel %>%
+  group_by(income) %>%
+  summarise(per=n()/nrow(per_hh_no_travel))
+per_hh_no_travel_race <- per_hh_no_travel %>%
+  group_by(race) %>%
+  summarise(per=n()/nrow(per_hh_no_travel))
 ggplot(per_hh_no_travel, aes(x=age))+
   geom_bar(position="dodge")+
   labs(title="Age Distribution of People Who Did Not Take Trips", x="Age Category", y="Frequency")
@@ -159,9 +177,17 @@ labels <- c("Average weekday transit ridership (average of boardings and alighti
 labels <- as.data.frame(cbind(names(dat),labels))
 labels
 head(dat)
-hist(dat$rider)
-hist(log(dat$rider))
+hist(dat$rider,
+     main = "Histogram of Heavy Rail Ridership",
+     xlab = "riders",
+     ylab = "Frequency")
+hist(log(dat$rider),
+     col="green",
+     main = "Histogram of Natural Log of Heavy Rail Ridership",
+     xlab = "log(riders)",
+     ylab = "Frequency")
 
+## Alternatives
 ggplot(dat, aes(x=rider))+
   geom_histogram()+
   labs(title="Histogram of Heavy Rail Ridership", x="Heavy Rail Ridership", y="Frequency")
@@ -193,3 +219,15 @@ ggplot(dat, aes(x=log(jobs_halfmile), y=log(rider)))+
 y<- lm(rider ~ jobs_halfmile + pop_halfmile + terminal_d + airport_d, dat)
 summary(y)
 
+#9.	Plot the residuals of the regression in question 7 against the fitted values.
+ggplot(dat, aes(x=fitted(y), y=resid(y)))+
+  geom_point()+
+  geom_hline(yintercept=0, linetype="dashed")+
+  labs(title="Residuals of the Regression against Fitted Values", x="Fitted Values", y="Residuals")
+
+plot(y)
+
+#10. Add the dummy variable for whether the station is a heavy rail station. Does this improve the model?
+# explain your answer.
+z<- lm(rider ~ jobs_halfmile + pop_halfmile + terminal_d + airport_d + hrt_d, dat)
+summary(z)
