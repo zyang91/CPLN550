@@ -143,5 +143,49 @@ per_hh_no_travel_reason <- per_hh_no_travel_reason %>%
   group_by(WHYNO) %>%
   summarise(count = n(),
             percentage = n()/nrow(per_hh_no_travel_reason))
-write.csv(per_hh_no_travel_reason, "per_hh_no_travel_reason.csv")
 
+#4.	Plot a histogram of heavy rail ridership and a histogram of the natural log of heavy rail ridership. 
+# Describe the two plots.
+dat <- data_train
+
+labels <- c("Average weekday transit ridership (average of boardings and alightings)",
+            "Trains in and out at the AM peak", "Number of bus connections within a quarter mile",
+            "Park and ride dummy", "Commuter rail dummy", "terminal station", "airport station",
+            "BRT station", "light rail station", "heavy rail station", "multimodal transfer center", 
+            "average distance to next station stops", "network distance to central business district",
+            "jobs accessible within 30m drive", "Population residing within a half mile", "jobs within a half mile",
+            "Unique CBSA id", "CBSA name")
+
+labels <- as.data.frame(cbind(names(dat),labels))
+labels
+head(dat)
+hist(dat$rider)
+hist(log(dat$rider))
+
+ggplot(dat, aes(x=rider))+
+  geom_histogram()+
+  labs(title="Histogram of Heavy Rail Ridership", x="Heavy Rail Ridership", y="Frequency")
+ggplot(dat, aes(x=log(rider)))+
+  geom_histogram()+
+  labs(title="Histogram of Natural Log of Heavy Rail Ridership", x="Natural Log of Heavy Rail Ridership", y="Frequency")
+
+#5.	Plot a scatter plot of heavy rail ridership (y-axis) against the jobs within a half mile of stations. 
+# Describe the relationship.
+ggplot(dat, aes(x=jobs_halfmile, y=rider))+
+  geom_point()+
+  geom_smooth(method="lm")+
+  labs(title="Scatter Plot of Heavy Rail Ridership against Jobs within a Half Mile", x="Jobs within a Half Mile", y="Heavy Rail Ridership")
+
+x <- lm(rider ~ jobs_halfmile, dat)
+summary(x)
+
+#6.	Plot a scatter plot of the natural log of heavy rail ridership (y-axis) against the natural log of people within a half mile of stations. 
+# Describe the relationship.  
+ggplot(dat, aes(x=log(jobs_halfmile), y=log(rider)))+
+  geom_point()+
+  geom_smooth(method="lm")+
+  labs(title="Scatter Plot of Natural Log of Heavy Rail Ridership against Natural Log of Jobs within a Half Mile", x="Natural Log of Jobs within a Half Mile", y="Natural Log of Heavy Rail Ridership")
+
+#7.	Predict station level ridership (linear) as a function of jobs within a half mile, population within a half mile, 
+# whether the station is a terminal, whether it connects to an airport. 
+# Provide the output of the regression.
