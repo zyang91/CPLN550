@@ -10,11 +10,6 @@ load("data.Rda")
 
 # 1.	Using the 2012 Philadelphia household travel survey, plot a histogram of the total number of trips people made (P_TOT_TRIPS). 
 # Describe the distribution of trip-making.
-summary(per$P_TOT_TRIPS)
-ggplot(per, aes(x=P_TOT_TRIPS))+ 
-  geom_histogram(binwidth= 1, fill="blue", color="black") + 
-  labs(title="Histogram of Total Number of Trips People Made", x="Total Number of Trips", y="Frequency")
-
 hist(per$P_TOT_TRIPS,
      breaks = 20,  # Adjust the number of breaks as needed
      col = "skyblue",
@@ -75,15 +70,15 @@ per_hh<-per_hh %>%
                            INCOME==9 ~ "$200,000-$249,999",
                            INCOME==10 ~ "$250,000 or more"))
 per_hh$income <- factor(per_hh$income, levels = c("Under $10,000", 
-                                                        "$10,000-$24,999", 
-                                                        "$25,000-$34,999",
-                                                        "$35,000-$49,999", 
-                                                        "$50,000-$74,999", 
-                                                        "$75,000-$99,999",
-                                                        "$100,000-$149,999", 
-                                                        "$150,000-$199,999", 
-                                                        "$200,000-$249,999", 
-                                                        "$250,000 or more"))
+                                                  "$10,000-$24,999", 
+                                                  "$25,000-$34,999",
+                                                  "$35,000-$49,999", 
+                                                  "$50,000-$74,999", 
+                                                  "$75,000-$99,999",
+                                                  "$100,000-$149,999", 
+                                                  "$150,000-$199,999", 
+                                                  "$200,000-$249,999", 
+                                                  "$250,000 or more"))
 per_hh <- per_hh %>%
   filter(RACE!=98) %>%
   filter(RACE!=99)%>%
@@ -98,15 +93,15 @@ per_hh <- per_hh %>%
                          RACE==6 ~ "Hawaiian or Pacific Islander",
                          RACE==97 ~ "Other",
                          RACE==100 ~ "Multi-Racial",
-                         ))
+  ))
 per_hh$race <- factor(per_hh$race,levels=c("White", 
-                      "Black", 
-                      "Hispanic", 
-                      "American Indian or Alaska Native", 
-                      "Asian", 
-                      "Hawaiian or Pacific Islander", 
-                      "Other", 
-                      "Multi-Racial"))
+                                           "Black", 
+                                           "Hispanic", 
+                                           "American Indian or Alaska Native", 
+                                           "Asian", 
+                                           "Hawaiian or Pacific Islander", 
+                                           "Other", 
+                                           "Multi-Racial"))
 ##  people who take trip age distribution
 per_hh_travel <- per_hh %>%
   filter(no_trip ==0)
@@ -119,17 +114,7 @@ per_hh_travel_income <- per_hh_travel %>%
 per_hh_travel_race <-per_hh_travel %>%
   group_by(race) %>%
   summarise(per=n()/nrow(per_hh_travel))
-ggplot(per_hh_travel, aes(x=age))+
-  geom_bar(position="dodge")+
-  labs(title="Age Distribution of People Who Took Trips", x="Age Category", y="Frequency")
 
-ggplot(per_hh_travel, aes(x=income))+
-  geom_bar(position="dodge")+
-  labs(title="Income Distribution of People Who Took Trips", x="Income Category", y="Frequency")
-
-ggplot(per_hh_travel, aes(x=race, fill=race))+
-  geom_bar(position="dodge")+
-  labs(title="Race Distribution of People Who Took Trips",x="RACE Category", y="Frequency")
 ##  people who did not take trip age distribution
 per_hh_no_travel <- per_hh %>%
   filter(no_trip ==1)
@@ -142,15 +127,6 @@ per_hh_no_travel_income <- per_hh_no_travel %>%
 per_hh_no_travel_race <- per_hh_no_travel %>%
   group_by(race) %>%
   summarise(per=n()/nrow(per_hh_no_travel))
-ggplot(per_hh_no_travel, aes(x=age))+
-  geom_bar(position="dodge")+
-  labs(title="Age Distribution of People Who Did Not Take Trips", x="Age Category", y="Frequency")
-ggplot(per_hh_no_travel, aes(x=income))+
-  geom_bar(position="dodge")+
-  labs(title="Income Distribution of People Who Did Not Take Trips", x="Income Category", y="Frequency")
-ggplot(per_hh_no_travel,aes(x=race, fill=race))+
-  geom_bar(position="dodge")+
-  labs(title="Race Distribution of People Who Did Not take Trips",x="Race Category", y="Frequency")
 
 #3.	Create a table showing the percentage of people who did not take a trip by the reason 
 # they did not take a trip (remember to use the data dictionary to find variables). 
@@ -189,13 +165,6 @@ hist(log(dat$rider),
      xlab = "log(riders)",
      ylab = "Frequency")
 summary(log(dat$rider))
-## Alternatives
-ggplot(dat, aes(x=rider))+
-  geom_histogram()+
-  labs(title="Histogram of Heavy Rail Ridership", x="Heavy Rail Ridership", y="Frequency")
-ggplot(dat, aes(x=log(rider)))+
-  geom_histogram()+
-  labs(title="Histogram of Natural Log of Heavy Rail Ridership", x="Natural Log of Heavy Rail Ridership", y="Frequency")
 
 #5.	Plot a scatter plot of heavy rail ridership (y-axis) against the jobs within a half mile of stations. 
 # Describe the relationship.
@@ -220,16 +189,14 @@ ggplot(dat, aes(x=log(jobs_halfmile), y=log(rider)))+
 
 y<- lm(rider ~ jobs_halfmile + pop_halfmile + terminal_d + airport_d, dat)
 summary(y)
-library(stargazer)
-stargazer(y, type="html", out="yregression.html")
 
 #9.	Plot the residuals of the regression in question 7 against the fitted values.
+plot(y)
+## alternative
 ggplot(dat, aes(x=fitted(y), y=resid(y)))+
   geom_point()+
   geom_hline(yintercept=0, linetype="dashed")+
   labs(title="Residuals of the Regression against Fitted Values", x="Fitted Values", y="Residuals")
-
-plot(y)
 
 #10. Add the dummy variable for whether the station is a heavy rail station. Does this improve the model?
 # explain your answer.
@@ -238,4 +205,3 @@ summary(z)
 
 library(stargazer)
 stargazer(y, z, type="text")
-stargazer(y, z, type="html", out="regression.html")
