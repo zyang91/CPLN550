@@ -229,7 +229,8 @@ ggplot(dat, aes(x=fitted(y), y=resid(y)))+
   geom_hline(yintercept=0, linetype="dashed")+
   labs(title="Residuals of the Regression against Fitted Values", x="Fitted Values", y="Residuals")
 
-plot(y)
+
+
 
 #10. Add the dummy variable for whether the station is a heavy rail station. Does this improve the model?
 # explain your answer.
