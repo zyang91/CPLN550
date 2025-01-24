@@ -8,6 +8,8 @@ University of Pennsylvania
 
 Instructor: Dr. Erick Guerra
 
+All Rights Reserved for the instructor and creators
+
 ## Course Overview
 This course provides an overview and introduction to urban transportation planning and policy. 
 Although the focus is on US transportation, the course will also pay special attention 
