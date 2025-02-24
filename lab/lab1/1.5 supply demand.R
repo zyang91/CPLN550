@@ -101,5 +101,3 @@ graph <- ggplot(dat, aes(y=price)) +
 graph 
 
 graph + theme(legend.title=element_blank())
-
-

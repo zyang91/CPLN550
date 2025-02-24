@@ -64,5 +64,3 @@ table(trip_train$prob >= .4 & trip_train$prob <= .6)
 trip_test$prob <- predict(logit1, type = "response", newdata=trip_test)
 
 boxplot(trip_test$prob ~ trip_test$p_transit)
-
-

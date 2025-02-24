@@ -126,5 +126,3 @@ ggplot(modechoice, aes(x= mode, y= INCOME, fill = mode))+
   labs(title="Boxplot of Household Income by Mode Choice", 
        x="Mode Choice", y= "Household Income")+
   theme(legend.position = "none")
-
-
