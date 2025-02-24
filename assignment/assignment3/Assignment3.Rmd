@@ -188,4 +188,3 @@ ggplot(modechoice, aes(x= mode, y= INCOME, fill = mode))+
        x="Mode Choice", y= "Household Income")+
   theme(legend.position = "none")
 ```
-

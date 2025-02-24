@@ -229,4 +229,3 @@ stargazer(ols1, type="html", out="models.htm"
 # Good fit does not always mean good predicting power. At a certain point, often in opposition.
 # Prediction can only be as good as our data allow it to be
 # "All models are wrong but some models are useful..." -George Box:
-
