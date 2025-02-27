@@ -27,7 +27,7 @@ mode_share <- trip %>%
 # Question 3
 test <- merge(trip,hh, by = "HH_ID")
 
-table(test$MODE_AGG[test$H_COUNTY ==  42101]) 
+table(test$MODE_AGG[test$H_COUNTY ==  42101])
 
 round(table(trip$MODE_AGG[trip$H_COUNTY == 42101])/sum(table(trip$MODE_AGG[trip$H_COUNTY == 42101])), 3)
 

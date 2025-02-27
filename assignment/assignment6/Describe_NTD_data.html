@@ -51,9 +51,9 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
 }
 </style>
 <div class="container-fluid main-container">
@@ -73,10 +73,10 @@ img {
 <li>Keep zeros. In 1992, Denver did not have a light rail. Instead of replacing entries of zero with NA’s, I keep the data. This will make it easier to analyze inlfuence of new light rail in the future. It is, however, worth noting that this is somewhat inconsistent and introduces some problems. It is inconsistent because Honolulu, which as never had a light rail system, is included from the panel and effectively the data are treated as NAs not zeros. It is potentially problematic, becuase if I will miscalculate average light rail ridership or operating expenses in 1992, if I’m not careful:</li>
 </ol>
 <pre class="r"><code>with(subset(NTD.ts, NTD.ts$Mode == &quot;LR&quot; &amp; NTD.ts$Year == 1992), summary(OPEXP_TOTAL) )</code></pre>
-<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.
 ##        0        0        0  6334000  5050000 62260000</code></pre>
 <pre class="r"><code>with(subset(NTD.ts, NTD.ts$Mode == &quot;LR&quot; &amp; NTD.ts$Year == 1992 &amp; NTD.ts$OPEXP_TOTAL &gt; 0), summary(OPEXP_TOTAL) )</code></pre>
-<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.
 ##   261200  4800000 11440000 17730000 21360000 62260000</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Replace known missing data with an NA. For example, the NTD does not report fare revenues earlier than 2002, so I replaced all fare entries with NAs.</p></li>

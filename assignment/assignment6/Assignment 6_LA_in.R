@@ -5,7 +5,7 @@ load("TS2.1TimeSeriesOpExpSvcModeTOS2021.Rda")
 NTD.19 <- subset(NTD.ts, Year == 2019)
 
 
-#NTD.19 <- subset(NTD.19, Service == "DO") #check 
+#NTD.19 <- subset(NTD.19, Service == "DO") #check
 
 #a.	Passenger miles (PMT) per unlinked passenger trip (UPT)
 mean(NTD.19$PMT[NTD.19$Mode == "LR" & NTD.19$PMT != 0]/NTD.19$UPT[NTD.19$Mode == "LR" & NTD.19$PMT != 0], na.rm = T)
@@ -16,7 +16,7 @@ mean(NTD.19$PMT[NTD.19$Mode == "CR" & NTD.19$PMT != 0]/NTD.19$UPT[NTD.19$Mode ==
 
 mean(NTD.19$PMT[NTD.19$Mode == "MB" & NTD.19$PMT != 0]/NTD.19$UPT[NTD.19$Mode == "MB" & NTD.19$PMT != 0], na.rm = T)
 
-    
+
 #b.	Passenger miles per directional route mile (DRM)
 mean(NTD.19$PMT[NTD.19$Mode == "LR" & NTD.19$PMT != 0]/NTD.19$DRM[NTD.19$Mode == "LR" & NTD.19$PMT != 0], na.rm = T)
 
@@ -57,7 +57,7 @@ mean(NTD.19$VRM[NTD.19$Mode == "CR" & NTD.19$PMT != 0]/NTD.19$VRH[NTD.19$Mode ==
 
 mean(NTD.19$VRM[NTD.19$Mode == "MB" & NTD.19$PMT != 0]/NTD.19$VRH[NTD.19$Mode == "MB" & NTD.19$PMT != 0], na.rm = T)
 
-#2 TOTAL FARE RECOVERY 
+#2 TOTAL FARE RECOVERY
 sum(NTD.19$FARES[NTD.19$Mode == "LR" & NTD.19$PMT != 0])/sum(NTD.19$OPEXP_TOTAL[NTD.19$Mode == "LR" & NTD.19$PMT != 0], na.rm = T)
 
 sum(NTD.19$FARES[NTD.19$Mode == "HR" & NTD.19$PMT != 0])/sum(NTD.19$OPEXP_TOTAL[NTD.19$Mode == "HR" & NTD.19$PMT != 0], na.rm = T)
@@ -88,7 +88,7 @@ LA$Mode <- as.character(LA$Mode)
 LA$Mode[LA$Mode == "MB" & LA$Service == "PT"] <- "MB_PT"
 
 
-ggplot(LA,  aes(x = Year, y = FRR ,  colour = Mode)) + 
+ggplot(LA,  aes(x = Year, y = FRR ,  colour = Mode)) +
   geom_line()
 
 
@@ -101,13 +101,13 @@ subset(LA[c("Year", "UPT","FARES", "OPEXP_TOTAL", "FRR", "Mode")], Mode == "MB")
 LA$FARES_PMT <- LA$FARES / LA$PMT
 LA$FARES_UPT <- LA$FARES / LA$UPT
 
-ggplot(LA,  aes(x = Year, y = FARES_PMT ,  colour = Mode)) + 
+ggplot(LA,  aes(x = Year, y = FARES_PMT ,  colour = Mode)) +
   geom_line()
 
 
-ggplot(LA,  aes(x = Year, y = FARES_UPT ,  colour = Mode)) + 
+ggplot(LA,  aes(x = Year, y = FARES_UPT ,  colour = Mode)) +
   geom_line()
 
 
-ggplot(LA,  aes(x = Year, y = PMT ,  colour = Mode)) + 
+ggplot(LA,  aes(x = Year, y = PMT ,  colour = Mode)) +
   geom_line()
