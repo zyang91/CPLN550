@@ -23,5 +23,4 @@ congestion charging, bicycle planning, and traffic calming.
  
 Throughout the course, I introduce a series of labs and lectures to familiarize you with 
 available transportation data and a variety of transportation planning methods. Please be sure 
-to download R, R-Studio, and any indicated datasets prior to a lab session. Labs will be 
-essential for completing semiweekly homework assignments. 
+to download R, R-Studio, and any indicated datasets prior to a lab session. 
