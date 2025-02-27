@@ -23,21 +23,21 @@ qd<- 20 - price * 1.8/30
 lines(qd, price)
 
 ###now let's solve for equilibrium
-##at equilibrium qs == qd, so: 
+##at equilibrium qs == qd, so:
 
 #20 - price * 1.8/30 == price*2/30
 #2price/30 +1.8price/30 == 20
 #3.8price == 600
-p_eq <- 600/3.8 
+p_eq <- 600/3.8
 print(p_eq)
 
 
-##now plug this into either equation to get 
+##now plug this into either equation to get
 q_eq <- 20 - p_eq * 1.8/30
 print(q_eq)
 
 
-       
+
 ###Now, let's add 22 cent external cost. What's total social cost of provision
 sc <- (price-22)*2/30
 lines(sc, price)
@@ -77,7 +77,7 @@ plot(dat$qs, dat$price, t="line")
 lines(dat$qd, dat$price)
 lines(dat$sc, dat$price)
 
-plot(dat$qs, dat$price, t="line", col=2, xlab="Average daily VMT per capita", 
+plot(dat$qs, dat$price, t="line", col=2, xlab="Average daily VMT per capita",
      ylab = "Price per VMT in cents",
      main = "Price, social cost, and VMT")
 
@@ -94,10 +94,10 @@ install.packages("ggplot2")
 library(ggplot2)
 
 graph <- ggplot(dat, aes(y=price)) +
-  geom_line(aes(x = qd, colour = "Demand")) + 
+  geom_line(aes(x = qd, colour = "Demand")) +
   geom_line(aes(x = qs, colour = "Supply")) +
   geom_line(aes(x = sc, colour = "Social Cost"))
 
-graph 
+graph
 
 graph + theme(legend.title=element_blank())

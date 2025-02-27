@@ -24,7 +24,7 @@ random_trip <- trip %>%
 
 # Question 3
 bike_trip <- trip %>%
-  filter(MODE_AGG == 2) 
+  filter(MODE_AGG == 2)
 bike_trip %>%
   summarise(total_trips=sum(P_WEIGHT, na.rm=TRUE))
 
@@ -70,19 +70,19 @@ household <-household %>%
                            INCOME==8 ~ "$150,000-$199,999",
                            INCOME==9 ~ "$200,000-$249,999",
                            INCOME==10 ~ "$250,000 or more"))
-household$income <- factor(household$income, levels = c("Under $10,000", 
-                                                        "$10,000-$24,999", 
+household$income <- factor(household$income, levels = c("Under $10,000",
+                                                        "$10,000-$24,999",
                                                         "$25,000-$34,999",
-                                                        "$35,000-$49,999", 
-                                                        "$50,000-$74,999", 
+                                                        "$35,000-$49,999",
+                                                        "$50,000-$74,999",
                                                         "$75,000-$99,999",
-                                                        "$100,000-$149,999", 
-                                                        "$150,000-$199,999", 
-                                                        "$200,000-$249,999", 
+                                                        "$100,000-$149,999",
+                                                        "$150,000-$199,999",
+                                                        "$200,000-$249,999",
                                                         "$250,000 or more"))
 ggplot(household, aes(x= income, y= VEHAGE))+
   geom_boxplot()+
-  labs(title="Boxplot of Car Age by Household Income Level", 
+  labs(title="Boxplot of Car Age by Household Income Level",
        x="Income level", y= "Vehicle Age")
 
 ### Without out lier plot
@@ -113,16 +113,16 @@ modechoice <- modechoice %>%
                              MODE_AGG==6 ~ "School Bus",
                              MODE_AGG==7 ~ "Other"))
 
-modechoice$mode <- factor(modechoice$mode, levels = c("Walk", 
-                                                      "Bike", 
-                                                      "Private Vehicle", 
-                                                      "Private Transit", 
-                                                      "Public Transit", 
-                                                      "School Bus", 
+modechoice$mode <- factor(modechoice$mode, levels = c("Walk",
+                                                      "Bike",
+                                                      "Private Vehicle",
+                                                      "Private Transit",
+                                                      "Public Transit",
+                                                      "School Bus",
                                                       "Other"))
 ## plot boxplot
 ggplot(modechoice, aes(x= mode, y= INCOME, fill = mode))+
   geom_boxplot()+
-  labs(title="Boxplot of Household Income by Mode Choice", 
+  labs(title="Boxplot of Household Income by Mode Choice",
        x="Mode Choice", y= "Household Income")+
   theme(legend.position = "none")

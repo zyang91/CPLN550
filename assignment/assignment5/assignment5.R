@@ -8,11 +8,11 @@ veh <- read.csv("3_Vehicle_Public.csv")
 trip <- read.csv("4_Trip_Public.csv")
 load("data.Rda")
 
-# 1.	Using the 2012 Philadelphia household travel survey, plot a histogram of the total number of trips people made (P_TOT_TRIPS). 
+# 1.	Using the 2012 Philadelphia household travel survey, plot a histogram of the total number of trips people made (P_TOT_TRIPS).
 # Describe the distribution of trip-making.
 summary(per$P_TOT_TRIPS)
-ggplot(per, aes(x=P_TOT_TRIPS))+ 
-  geom_histogram(binwidth= 1, fill="blue", color="black") + 
+ggplot(per, aes(x=P_TOT_TRIPS))+
+  geom_histogram(binwidth= 1, fill="blue", color="black") +
   labs(title="Histogram of Total Number of Trips People Made", x="Total Number of Trips", y="Frequency")
 
 hist(per$P_TOT_TRIPS,
@@ -23,8 +23,8 @@ hist(per$P_TOT_TRIPS,
      xlab = "Total Number of Trips",
      ylab = "Frequency")
 
-# 2.	Create a new variable that equals 1 if a person did not take any trips 
-# (hint: dat$newvariable <- as.integer(dat$P_WEIGHT == 0)). How many people in the sample took no trips? 
+# 2.	Create a new variable that equals 1 if a person did not take any trips
+# (hint: dat$newvariable <- as.integer(dat$P_WEIGHT == 0)). How many people in the sample took no trips?
 # Summarize the race, age, and income of those who took trips on the survey day vs. those that did not.
 
 per$no_trip <- as.integer(per$P_TOT_TRIPS == 0)
@@ -51,17 +51,17 @@ per_hh <-per_hh %>%
                         AGECAT==10 ~ "65-74",
                         AGECAT==11 ~ "75-84",
                         AGECAT==12 ~ "85+"))
-per_hh$age <- factor(per_hh$age, levels = c("Under 5", 
-                                            "6-12", 
-                                            "13-15", 
-                                            "16-17", 
-                                            "18-24", 
-                                            "25-34", 
-                                            "35-44", 
-                                            "45-54", 
-                                            "55-64", 
-                                            "65-74", 
-                                            "75-84", 
+per_hh$age <- factor(per_hh$age, levels = c("Under 5",
+                                            "6-12",
+                                            "13-15",
+                                            "16-17",
+                                            "18-24",
+                                            "25-34",
+                                            "35-44",
+                                            "45-54",
+                                            "55-64",
+                                            "65-74",
+                                            "75-84",
                                             "85+"))
 per_hh<-per_hh %>%
   mutate(income= case_when(INCOME==1 ~ "Under $10,000",
@@ -74,15 +74,15 @@ per_hh<-per_hh %>%
                            INCOME==8 ~ "$150,000-$199,999",
                            INCOME==9 ~ "$200,000-$249,999",
                            INCOME==10 ~ "$250,000 or more"))
-per_hh$income <- factor(per_hh$income, levels = c("Under $10,000", 
-                                                        "$10,000-$24,999", 
+per_hh$income <- factor(per_hh$income, levels = c("Under $10,000",
+                                                        "$10,000-$24,999",
                                                         "$25,000-$34,999",
-                                                        "$35,000-$49,999", 
-                                                        "$50,000-$74,999", 
+                                                        "$35,000-$49,999",
+                                                        "$50,000-$74,999",
                                                         "$75,000-$99,999",
-                                                        "$100,000-$149,999", 
-                                                        "$150,000-$199,999", 
-                                                        "$200,000-$249,999", 
+                                                        "$100,000-$149,999",
+                                                        "$150,000-$199,999",
+                                                        "$200,000-$249,999",
                                                         "$250,000 or more"))
 per_hh <- per_hh %>%
   filter(RACE!=98) %>%
@@ -99,13 +99,13 @@ per_hh <- per_hh %>%
                          RACE==97 ~ "Other",
                          RACE==100 ~ "Multi-Racial",
                          ))
-per_hh$race <- factor(per_hh$race,levels=c("White", 
-                      "Black", 
-                      "Hispanic", 
-                      "American Indian or Alaska Native", 
-                      "Asian", 
-                      "Hawaiian or Pacific Islander", 
-                      "Other", 
+per_hh$race <- factor(per_hh$race,levels=c("White",
+                      "Black",
+                      "Hispanic",
+                      "American Indian or Alaska Native",
+                      "Asian",
+                      "Hawaiian or Pacific Islander",
+                      "Other",
                       "Multi-Racial"))
 ##  people who take trip age distribution
 per_hh_travel <- per_hh %>%
@@ -152,8 +152,8 @@ ggplot(per_hh_no_travel,aes(x=race, fill=race))+
   geom_bar(position="dodge")+
   labs(title="Race Distribution of People Who Did Not take Trips",x="Race Category", y="Frequency")
 
-#3.	Create a table showing the percentage of people who did not take a trip by the reason 
-# they did not take a trip (remember to use the data dictionary to find variables). 
+#3.	Create a table showing the percentage of people who did not take a trip by the reason
+# they did not take a trip (remember to use the data dictionary to find variables).
 per_hh_no_travel_reason <- left_join(per_hh_no_travel, trip, by = "PERSON_ID")
 per_hh_no_travel_reason <- per_hh_no_travel_reason %>%
   filter(WHYNO != 98) %>%
@@ -163,14 +163,14 @@ per_hh_no_travel_reason <- per_hh_no_travel_reason %>%
   summarise(count = n(),
             percentage = n()/nrow(per_hh_no_travel_reason))
 
-#4.	Plot a histogram of heavy rail ridership and a histogram of the natural log of heavy rail ridership. 
+#4.	Plot a histogram of heavy rail ridership and a histogram of the natural log of heavy rail ridership.
 # Describe the two plots.
 dat <- data_train
 
 labels <- c("Average weekday transit ridership (average of boardings and alightings)",
             "Trains in and out at the AM peak", "Number of bus connections within a quarter mile",
             "Park and ride dummy", "Commuter rail dummy", "terminal station", "airport station",
-            "BRT station", "light rail station", "heavy rail station", "multimodal transfer center", 
+            "BRT station", "light rail station", "heavy rail station", "multimodal transfer center",
             "average distance to next station stops", "network distance to central business district",
             "jobs accessible within 30m drive", "Population residing within a half mile", "jobs within a half mile",
             "Unique CBSA id", "CBSA name")
@@ -197,7 +197,7 @@ ggplot(dat, aes(x=log(rider)))+
   geom_histogram()+
   labs(title="Histogram of Natural Log of Heavy Rail Ridership", x="Natural Log of Heavy Rail Ridership", y="Frequency")
 
-#5.	Plot a scatter plot of heavy rail ridership (y-axis) against the jobs within a half mile of stations. 
+#5.	Plot a scatter plot of heavy rail ridership (y-axis) against the jobs within a half mile of stations.
 # Describe the relationship.
 ggplot(dat, aes(x=jobs_halfmile, y=rider))+
   geom_point()+
@@ -207,15 +207,15 @@ ggplot(dat, aes(x=jobs_halfmile, y=rider))+
 x <- lm(rider ~ jobs_halfmile, dat)
 summary(x)
 
-#6.	Plot a scatter plot of the natural log of heavy rail ridership (y-axis) against the natural log of people within a half mile of stations. 
-# Describe the relationship.  
+#6.	Plot a scatter plot of the natural log of heavy rail ridership (y-axis) against the natural log of people within a half mile of stations.
+# Describe the relationship.
 ggplot(dat, aes(x=log(jobs_halfmile), y=log(rider)))+
   geom_point()+
   geom_smooth(method="lm")+
   labs(title="Scatter Plot of Natural Log of Heavy Rail Ridership against Natural Log of Jobs within a Half Mile", x="Natural Log of Jobs within a Half Mile", y="Natural Log of Heavy Rail Ridership")
 
-#7.	Predict station level ridership (linear) as a function of jobs within a half mile, population within a half mile, 
-# whether the station is a terminal, whether it connects to an airport. 
+#7.	Predict station level ridership (linear) as a function of jobs within a half mile, population within a half mile,
+# whether the station is a terminal, whether it connects to an airport.
 # Provide the output of the regression.
 
 y<- lm(rider ~ jobs_halfmile + pop_halfmile + terminal_d + airport_d, dat)

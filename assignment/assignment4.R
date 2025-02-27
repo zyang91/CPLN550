@@ -47,7 +47,7 @@ hh_per <- hh_per %>%
     INCOME == 8 ~ 175000,
     INCOME == 9 ~ 225000,
     INCOME == 10 ~ 300000,
-   
+
   ))
 hh_per <- hh_per %>%
   filter(!is.na(HOURS)) %>%

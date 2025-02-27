@@ -20,7 +20,7 @@ str(dat)
 labels <- c("Average weekday transit ridership (average of boardings and alightings)",
             "Trains in and out at the AM peak", "Number of bus connections within a quarter mile",
             "Park and ride dummy", "Commuter rail dummy", "terminal station", "airport station",
-            "BRT station", "light rail station", "heavy rail station", "multimodal transfer center", 
+            "BRT station", "light rail station", "heavy rail station", "multimodal transfer center",
             "average distance to next station stops", "network distance to central business district",
             "jobs accessible within 30m drive", "Population residing within a half mile", "jobs within a half mile",
             "Unique CBSA id", "CBSA name")
@@ -128,8 +128,8 @@ stargazer(x,x2, type = "text")
 # First check the Star (statistics significant)
 # Second check whether the coefficient changes a lot
 
-# 1. Informal: statistically significant variable? 
-# 2. Theoretically logical? 
+# 1. Informal: statistically significant variable?
+# 2. Theoretically logical?
 # 3. Formal Full Model Reduced model ANOVA test
 anova(x,x2)
 
@@ -137,7 +137,7 @@ anova(x,x2)
 dat$p1 <- predict(x2)
 
 hist(dat$p1)
-# Notice something weird here? 
+# Notice something weird here?
 
 summary(dat$p1)
 
@@ -162,7 +162,7 @@ hist(log(dat$rider))
 # Why plus 1 here?
 
 
-x3 <- lm(log(rider+1) ~ log(pop_halfmile+1) + log(jobs_halfmile+1) 
+x3 <- lm(log(rider+1) ~ log(pop_halfmile+1) + log(jobs_halfmile+1)
          + log(frequency) + log (bus_connections+1), dat)
 summary(x3)
 # R-square lower, but much better models

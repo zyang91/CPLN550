@@ -25,26 +25,26 @@ logit1$coefficients
 exp(logit1$coefficients)
 
 
-logit2 <- glm(p_transit ~ OP_VEH + 
+logit2 <- glm(p_transit ~ OP_VEH +
                 GEND2 + AGECAT2 + INCOME2 + RACE2 + EDUCA2 +has_under5 +
                 I(Transit_JourneyTime-Auto_TravelTime) +
-                I(Transit_Fare- AutoCost) 
+                I(Transit_Fare- AutoCost)
               ,
               data = trip_train,family = binomial(link="logit"))
 
 
-logit3 <- glm(p_transit ~ OP_VEH + 
+logit3 <- glm(p_transit ~ OP_VEH +
                 GEND2 + AGECAT2 + INCOME2 + RACE2 + EDUCA2 +has_under5
               + LandUseIndex +
-                DistToCBD + PARKCOST_METER + 
+                DistToCBD + PARKCOST_METER +
                 I(Transit_JourneyTime-Auto_TravelTime) +
-                I(Transit_Fare- AutoCost) 
+                I(Transit_Fare- AutoCost)
               + busFrqAvg + rail_800m,
               data = trip_train,family = binomial(link="logit"))
 
 
 stargazer(logit1, logit2, logit3, type ="text")
-stargazer(logit1, logit2, logit3, title= "Regression comparision", type="html", 
+stargazer(logit1, logit2, logit3, title= "Regression comparision", type="html",
           align=TRUE,out="model_comparison_010621.html")
 
 
